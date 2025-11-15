@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { Rocket } from "lucide-react";
 
 export default function Hero() {
   return (
@@ -16,11 +17,12 @@ export default function Hero() {
         >
           Learn What You Need, <br /> Teach What You Know 💡
         </motion.h1>
+
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="text-textSecondary max-w-xl font-inter mb-8"
+          className="mb-5"
         >
           SkillSwap connects learners and mentors within your campus. Exchange
           skills, collaborate, and grow together!
@@ -31,8 +33,8 @@ export default function Hero() {
           transition={{ delay: 0.4 }}
         >
           <Link href="/register">
-            <Button className="bg-primary text-white text-lg px-6 py-3 hover:bg-primary/90">
-              Start Swapping 🚀
+            <Button size={"lg"}>
+              Start Swapping <Rocket />
             </Button>
           </Link>
         </motion.div>

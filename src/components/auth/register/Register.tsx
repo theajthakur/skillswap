@@ -64,9 +64,9 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-[80vh] bg-[var(--color-background)] flex items-center justify-center p-6">
-      <div className="w-full max-w-lg bg-[var(--color-surface)] shadow-xl rounded-xl p-8">
-        <h1 className="text-2xl font-semibold text-[var(--color-foreground)] mb-6 text-center">
+    <div className="min-h-[80vh] bg-background flex items-center justify-center p-6">
+      <div className="w-full max-w-lg bg-surface shadow-xl rounded-xl p-8">
+        <h1 className="text-2xl font-semibold text-foreground mb-6 text-center">
           Register
         </h1>
 
@@ -76,10 +76,11 @@ export default function Register() {
 
         <div className="grid grid-cols-1 gap-5">
           <Input
+            type="text"
             placeholder="Full Name"
             value={form.name}
             onChange={(e) => handleChange("name", e.target.value)}
-            className="border border-[var(--color-text-secondary)] text-[var(--color-foreground)]"
+            className="border text-foreground"
           />
 
           <Input
@@ -87,42 +88,76 @@ export default function Register() {
             placeholder="Email"
             value={form.email}
             onChange={(e) => handleChange("email", e.target.value)}
-            className="border border-[var(--color-text-secondary)] text-[var(--color-foreground)]"
+            className="border text-foreground"
           />
 
           <Input
-            type="tel"
+            type="number"
             placeholder="Mobile Number"
             value={form.mobile}
             onChange={(e) => handleChange("mobile", e.target.value)}
-            className="border border-[var(--color-text-secondary)] text-[var(--color-foreground)]"
+            className="border text-foreground"
           />
 
-          <Input
-            placeholder="Gender"
-            value={form.gender}
-            onChange={(e) => handleChange("gender", e.target.value)}
-            className="border border-[var(--color-text-secondary)] text-[var(--color-foreground)]"
-          />
+          <div className="flex flex-col gap-2 text-foreground border-2 border-black/5 p-2 rounded-sm">
+            <label className="font-medium text-foreground">Gender</label>
+
+            <div className="flex items-center gap-3 text-foreground/60">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="gender"
+                  value="Male"
+                  checked={form.gender === "Male"}
+                  onChange={(e) => handleChange("gender", e.target.value)}
+                />
+                Male
+              </label>
+
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="gender"
+                  value="Female"
+                  checked={form.gender === "Female"}
+                  onChange={(e) => handleChange("gender", e.target.value)}
+                />
+                Female
+              </label>
+
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="gender"
+                  value="Other"
+                  checked={form.gender === "Other"}
+                  onChange={(e) => handleChange("gender", e.target.value)}
+                />
+                Other
+              </label>
+            </div>
+          </div>
 
           <Input
+            type="text"
             placeholder="Skills (comma separated)"
             value={form.skillsInput}
             onChange={(e) => handleChange("skillsInput", e.target.value)}
-            className="border border-[var(--color-text-secondary)] text-[var(--color-foreground)]"
+            className="border text-foreground"
           />
 
           <Input
+            type="text"
             placeholder="Interests (comma separated)"
             value={form.interestsInput}
             onChange={(e) => handleChange("interestsInput", e.target.value)}
-            className="border border-[var(--color-text-secondary)] text-[var(--color-foreground)]"
+            className="border text-foreground"
           />
 
           <Button
             disabled={loading}
             onClick={handleSubmit}
-            className="w-full bg-[var(--color-primary)] hover:bg-[var(--color-secondary)] text-white"
+            className="w-full bg-primary hover:bg-secondary text-white"
           >
             {loading ? "Registering..." : "Register"}
           </Button>

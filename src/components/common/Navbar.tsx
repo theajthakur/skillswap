@@ -1,11 +1,28 @@
 import { Button } from "../ui/button";
 import { useAuth } from "../providers/AuthProvider";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Navbar() {
   const { user } = useAuth();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   return (
-    <nav className="flex justify-between items-center px-8 py-5">
+    <nav
+      className={`flex justify-between items-center px-8 -top-5 transition-all ${
+        scrolled ? "sticky top-0 bg-white border-b py-2" : "py-5"
+      }`}
+    >
       <Link
         href={"/"}
         className="text-2xl font-poppins font-semibold text-primary w-full sm:w-auto text-center sm:text-left"

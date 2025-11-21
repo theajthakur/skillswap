@@ -32,7 +32,7 @@ export default function Hero() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
         >
-          <Link href="/register">
+          <Link href="/start">
             <Button size={"lg"}>
               Start Swapping <Rocket />
             </Button>

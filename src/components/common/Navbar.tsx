@@ -1,14 +1,17 @@
-import Link from "next/link";
 import { Button } from "../ui/button";
 import { useAuth } from "../providers/AuthProvider";
+import Link from "next/link";
 
 export default function Navbar() {
   const { user } = useAuth();
   return (
     <nav className="flex justify-between items-center px-8 py-5">
-      <h1 className="text-2xl font-poppins font-semibold text-primary w-full sm:w-auto text-center sm:text-left">
+      <Link
+        href={"/"}
+        className="text-2xl font-poppins font-semibold text-primary w-full sm:w-auto text-center sm:text-left"
+      >
         SkillSwap
-      </h1>
+      </Link>
 
       <div className="hidden sm:flex gap-6 font-inter text-textSecondary">
         <Link href="#features" className="hover:text-primary">
@@ -35,7 +38,7 @@ export default function Navbar() {
         </div>
       ) : (
         <div className="hidden sm:flex gap-3">
-          <Link href="/login">
+          <Link href="/auth">
             <Button
               variant="outline"
               className="border-primary text-primary hover:bg-primary/10"
@@ -43,7 +46,7 @@ export default function Navbar() {
               Login
             </Button>
           </Link>
-          <Link href="/register">
+          <Link href="/get-started">
             <Button className="bg-primary text-white hover:bg-primary/90">
               Get Started
             </Button>

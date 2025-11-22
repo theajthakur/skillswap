@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Navbar() {
-  const { user } = useAuth();
+  const { isLogin } = useAuth();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export default function Navbar() {
         </Link>
       </div>
 
-      {user ? (
+      {isLogin ? (
         <div className="hidden sm:flex gap-3">
           <Link href="/profile">
             <Button

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/components/providers/AuthProvider";
+import Link from "next/link";
 
 export default function Login() {
   const { login } = useAuth();
@@ -79,7 +80,10 @@ export default function Login() {
           />
 
           <p className="text-shadow">
-            Forgot password? <Button variant={"link"}>Reset here</Button>
+            Forgot password?{" "}
+            <Link href={"/reset"}>
+              <Button variant={"link"}>Reset here</Button>
+            </Link>
           </p>
 
           <Button

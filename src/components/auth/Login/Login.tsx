@@ -3,11 +3,14 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/components/providers/AuthProvider";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { FcGoogle } from "react-icons/fc";
+
 
 export default function Login() {
-  const { login } = useAuth();
+  const router = useRouter();
 
   const [form, setForm] = useState({
     email: "",
@@ -23,36 +26,32 @@ export default function Login() {
 
   const handleLogin = async () => {
     setError("");
-    setLoading(true);
 
-    try {
-      const res = await fetch(`${process.env.SERVER_URL}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: form.email,
-          password: form.password,
-        }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data?.message || "Invalid credentials");
-        setLoading(false);
-        return;
-      }
-
-      login(data.token);
-    } catch {
-      setError("Something went wrong");
+    if (!form.email || !form.password) {
+      setError("Email and password are required");
+      return;
     }
 
+    setLoading(true);
+
+    const res = await signIn("credentials", {
+      email: form.email,
+      password: form.password,
+      redirect: false, // IMPORTANT: Let us handle redirect manually
+    });
+
     setLoading(false);
+
+    if (res?.error) {
+      setError("Invalid email or password");
+      return;
+    }
+
+    router.push("/");
   };
 
   return (
-    <div className=" bg-background flex items-center justify-center p-6">
+    <div className="bg-background flex items-center justify-center p-6">
       <div className="w-full max-w-sm bg-surface shadow-lg rounded-xl p-8">
         <h1 className="text-2xl font-semibold text-foreground mb-6 text-center">
           Login
@@ -63,6 +62,17 @@ export default function Login() {
         )}
 
         <div className="space-y-5">
+          <Button
+            variant="outline"
+            disabled={loading}
+            onClick={() => {
+              setLoading(true);
+              signIn("google", { callbackUrl: "/" });
+            }}
+            className="w-full flex items-center justify-center gap-2 border text-foreground"
+          >
+            {loading ? "Redirecting..." : (<><FcGoogle /> Login with Google</>)}
+          </Button>
           <Input
             type="email"
             placeholder="Email"

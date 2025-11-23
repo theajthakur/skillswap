@@ -14,7 +14,46 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+  id        String   @id @default(cuid())
+  name      String?
+  email     String   @unique
+  mobile    String?
+  gender    String?
+  skills    String[]
+  interests String[]
+  password  String?
+  image     String?
+  provider  String   @default("credentials")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sessionsA TeachSession[] @relation("UserA")
+  sessionsB TeachSession[] @relation("UserB")
+
+  messagesSent Message[] @relation("Sender")
+}
+
+model TeachSession {
+  id      String @id @default(cuid())
+  userA   User   @relation("UserA", fields: [userAId], references: [id])
+  userAId String
+  userB   User   @relation("UserB", fields: [userBId], references: [id])
+  userBId String
+
+  topic     String?
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  messages Message[] @relation("Session")
+}
+
+model Message {
+  id        String       @id @default(cuid())
+  chat      TeachSession @relation("Session", fields: [chatId], references: [id])
+  chatId    String
+  sender    User         @relation("Sender", fields: [senderId], references: [id])
+  senderId  String
+  text      String
+  createdAt DateTime     @default(now())
 }

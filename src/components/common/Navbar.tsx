@@ -2,9 +2,12 @@ import { Button } from "../ui/button";
 import { useAuth } from "../providers/AuthProvider";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import DropdownUI from "../ui/ready/dropdown";
+import { ChevronDown, User } from "lucide-react";
+import { signOut } from "next-auth/react";
 
 export default function Navbar() {
-  const { isLogin } = useAuth();
+  const { isLogin, user } = useAuth();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -44,14 +47,22 @@ export default function Navbar() {
 
       {isLogin ? (
         <div className="hidden sm:flex gap-3">
-          <Link href="/profile">
-            <Button
-              variant="outline"
-              className="border-primary text-primary hover:bg-primary/10"
-            >
-              Profile
-            </Button>
-          </Link>
+          <DropdownUI
+            text={
+              <>
+                {user?.name?.split(" ")[0] || "Profile"} <ChevronDown />
+              </>
+            }
+            label={
+              <div className="w-full flex items-center gap-2">
+                <User /> {user?.name || "User"}
+              </div>
+            }
+            children={[
+              { href: "/profile", label: "Profile" },
+              { onClick: signOut, label: "Logout" },
+            ]}
+          />
         </div>
       ) : (
         <div className="hidden sm:flex gap-3">

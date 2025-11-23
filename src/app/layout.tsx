@@ -19,6 +19,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "SkillSwap — Learn & Teach Skills within Your Campus",
+  metadataBase: new URL("https://skillswapgcet.verel.app"),
   description:
     "SkillSwap is a platform that connects students to learn and exchange skills like coding, cooking, or languages — learn what you need, teach what you know!",
   keywords: [
@@ -34,7 +35,7 @@ export const metadata: Metadata = {
     title: "SkillSwap — Learn & Teach Skills within Your Campus",
     description:
       "Join SkillSwap and exchange your skills with peers. Learn faster through collaboration.",
-    url: "https://skillswap.vercel.app",
+    url: "https://skillswapgcet.vercel.app",
     siteName: "SkillSwap",
     images: [
       {
@@ -54,7 +55,14 @@ export const metadata: Metadata = {
       "A community platform for students to exchange and learn new skills together.",
     images: ["/og-image.png"],
   },
+};
+
+export const viewport = {
   themeColor: "#4f46e5",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({

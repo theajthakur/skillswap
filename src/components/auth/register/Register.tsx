@@ -3,11 +3,18 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
-export default function Register() {
+export default function Register({
+  setCurPage,
+}: {
+  setCurPage: (page: string) => void;
+}) {
+  const router = useRouter();
   const [form, setForm] = useState({
     name: "",
     email: "",
+    password: "",
     mobile: "",
     gender: "",
     skillsInput: "",
@@ -31,32 +38,38 @@ export default function Register() {
   const handleSubmit = async () => {
     setError("");
     setLoading(true);
-
+    console.log(form);
     const skills = parseList(form.skillsInput);
     const interests = parseList(form.interestsInput);
 
     try {
-      const res = await fetch(`${process.env.SERVER_URL}/auth/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: form.name,
-          email: form.email,
-          mobile: form.mobile,
-          gender: form.gender,
-          skills,
-          interests,
-        }),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/auth/register`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: form.name,
+            email: form.email,
+            password: form.password,
+            mobile: form.mobile,
+            gender: form.gender,
+            skills,
+            interests,
+          }),
+        }
+      );
 
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data?.message || "Registration failed");
+        setError(data?.message || data?.error || "Registration failed");
         setLoading(false);
         return;
       }
-    } catch {
+
+      setCurPage("login");
+    } catch (error) {
       setError("Something went wrong");
     }
 
@@ -88,6 +101,14 @@ export default function Register() {
             placeholder="Email"
             value={form.email}
             onChange={(e) => handleChange("email", e.target.value)}
+            className="border text-foreground"
+          />
+
+          <Input
+            type="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={(e) => handleChange("password", e.target.value)}
             className="border text-foreground"
           />
 

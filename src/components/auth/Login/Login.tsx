@@ -8,7 +8,6 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 
-
 export default function Login() {
   const router = useRouter();
 
@@ -37,7 +36,7 @@ export default function Login() {
     const res = await signIn("credentials", {
       email: form.email,
       password: form.password,
-      redirect: false, // IMPORTANT: Let us handle redirect manually
+      redirect: false,
     });
 
     setLoading(false);
@@ -71,7 +70,13 @@ export default function Login() {
             }}
             className="w-full flex items-center justify-center gap-2 border text-foreground"
           >
-            {loading ? "Redirecting..." : (<><FcGoogle /> Login with Google</>)}
+            {loading ? (
+              "Redirecting..."
+            ) : (
+              <>
+                <FcGoogle /> Login with Google
+              </>
+            )}
           </Button>
           <Input
             type="email"

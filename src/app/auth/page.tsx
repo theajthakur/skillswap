@@ -34,7 +34,11 @@ export default function Page() {
           </div>
         </div>
         <div className="output">
-          {curPage == "login" ? <Login /> : <Register />}
+          {curPage == "login" ? (
+            <Login />
+          ) : (
+            <Register setCurPage={setCurPage} />
+          )}
         </div>
       </div>
     </>

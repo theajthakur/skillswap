@@ -1,8 +1,6 @@
 import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma";
 import UserProfile from "@/components/user/profile/Profile";
-import { User } from "@prisma/client";
-
 export default async function Page() {
   const session = await getServerSession();
 

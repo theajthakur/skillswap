@@ -8,6 +8,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import Image from "next/image";
 
 export default function UserProfile({ user }: { user: User }) {
   const { update } = useSession();
@@ -72,9 +73,11 @@ export default function UserProfile({ user }: { user: User }) {
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center text-xl font-semibold">
                   {user.image ? (
-                    <img
+                    <Image
                       src={user.image}
-                      alt={user.name}
+                      alt={user?.name || "User"}
+                      width={50}
+                      height={50}
                       className="w-full h-full object-cover rounded-full"
                     />
                   ) : (

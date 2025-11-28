@@ -3,9 +3,11 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { Rocket } from "lucide-react";
+import { Key, Rocket } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 export default function Hero() {
+  const { status } = useSession();
   return (
     <section className="flex flex-col md:flex-row gap-5 flex-wrap items-center justify-center text-center min-h-[90vh] p-6 bg-gradient-to-b from-primary/5 to-background">
       <div>
@@ -32,11 +34,19 @@ export default function Hero() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
         >
-          <Link href="/start">
-            <Button size={"lg"}>
-              Start Swapping <Rocket />
-            </Button>
-          </Link>
+          {status === "unauthenticated" ? (
+            <Link href="/auth">
+              <Button size={"lg"} variant={"outline"}>
+                Login To Match <Key />
+              </Button>
+            </Link>
+          ) : (
+            <Link href="/match">
+              <Button size={"lg"}>
+                Start Matching <Rocket />
+              </Button>
+            </Link>
+          )}
         </motion.div>
       </div>
       <div>

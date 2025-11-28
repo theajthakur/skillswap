@@ -24,8 +24,9 @@ export default function Login() {
   };
 
   const handleLogin = async () => {
-    setError("");
+    setError(""); // Clear the error message on each new login attempt
 
+    // Basic client-side validation
     if (!form.email || !form.password) {
       setError("Email and password are required");
       return;
@@ -33,16 +34,19 @@ export default function Login() {
 
     setLoading(true);
 
+    // Call the signIn function with credentials
     const res = await signIn("credentials", {
       email: form.email,
       password: form.password,
-      redirect: false,
+      redirect: false, // Ensure we handle the redirect manually
     });
 
     setLoading(false);
 
+    // Handle response from the API
     if (res?.error) {
-      setError("Invalid email or password");
+      setError(res.error);
+      console.log("Error response:", res);
       return;
     }
 
@@ -78,6 +82,7 @@ export default function Login() {
               </>
             )}
           </Button>
+
           <Input
             type="email"
             placeholder="Email"

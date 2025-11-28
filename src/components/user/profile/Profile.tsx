@@ -8,10 +8,9 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import Image from "next/image";
 
 export default function UserProfile({ user }: { user: User }) {
-  const { update } = useSession();
+  const { update, data } = useSession();
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -23,7 +22,9 @@ export default function UserProfile({ user }: { user: User }) {
   const handleUpdate = async () => {
     setIsLoading(true);
     try {
-      const skillsArray = formData.skills.split(",").map((s: string) => s.trim());
+      const skillsArray = formData.skills
+        .split(",")
+        .map((s: string) => s.trim());
       const interestsArray = formData.interests
         .split(",")
         .map((i: string) => i.trim());
@@ -73,7 +74,7 @@ export default function UserProfile({ user }: { user: User }) {
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center text-xl font-semibold">
                   {user.image ? (
-                    <Image
+                    <img
                       src={user.image}
                       alt={user?.name || "User"}
                       width={50}

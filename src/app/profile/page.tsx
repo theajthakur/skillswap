@@ -1,18 +1,22 @@
 import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma";
 import UserProfile from "@/components/user/profile/Profile";
+import { redirect } from "next/navigation";
+
 export default async function Page() {
   const session = await getServerSession();
 
   if (!session?.user?.email) {
-    return <div>Not logged in</div>;
+    redirect("/logout");
   }
 
   const data = await prisma.user.findUnique({
     where: { email: session.user.email },
   });
 
-  if (!data) return <div>User not found</div>;
+  if (!data) {
+    redirect("/logout");
+  }
 
   return <UserProfile user={data} />;
 }

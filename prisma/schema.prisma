@@ -23,6 +23,7 @@ model User {
   interests String[]
   password  String?
   image     String?
+  status    String   @default("pending")
   provider  String   @default("credentials")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -31,6 +32,7 @@ model User {
   sessionsB TeachSession[] @relation("UserB")
 
   messagesSent Message[] @relation("Sender")
+  verificationTokens VerificationToken[]
 }
 
 model TeachSession {
@@ -56,4 +58,11 @@ model Message {
   senderId  String
   text      String
   createdAt DateTime     @default(now())
+}
+
+model VerificationToken {
+  userId    String       @id
+  user      User         @relation(fields: [userId], references: [id])
+  token     String       @unique
+  expiresAt DateTime
 }

@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import axios from "axios";
 
 export default function Register({
   setCurPage,
@@ -16,6 +18,7 @@ export default function Register({
     email: "",
     password: "",
     mobile: "",
+    userName: "",
     gender: "",
     skillsInput: "",
     interestsInput: "",
@@ -23,6 +26,11 @@ export default function Register({
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [uidStatus, setUidStatus] = useState({
+    status: null,
+    userName: null,
+  } as { status: "success" | "fail" | null; userName: string | null });
+  const [typingValue, setTypingValue] = useState("");
 
   const parseList = (value: string) =>
     value
@@ -32,7 +40,39 @@ export default function Register({
       .slice(0, 5);
 
   const handleChange = (key: string, value: string) => {
-    setForm((prev) => ({ ...prev, [key]: value }));
+    if (key == "userName") {
+      if (value.match(/[^a-zA-Z0-9_]/)) {
+        toast.error(
+          "User ID can only contain letters, numbers, and underscores"
+        );
+      } else {
+        setTypingValue(value);
+      }
+    }
+    setForm((prev) => ({ ...prev, [key]: typingValue }));
+  };
+
+  useEffect(() => {
+    if (typingValue === "") {
+      setUidStatus({ status: null, userName: null });
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      checkuserName(typingValue);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [typingValue]);
+
+  const checkuserName = async (uid: string) => {
+    const res = await axios.get("/api/secured/users/" + uid);
+    const data = res.data;
+    if (data?.data) {
+      setUidStatus({ status: "fail", userName: uid });
+    } else {
+      setUidStatus({ status: "success", userName: uid });
+    }
   };
 
   const handleSubmit = async () => {
@@ -120,6 +160,36 @@ export default function Register({
             className="border text-foreground"
           />
 
+          <div>
+            <Input
+              type="text"
+              placeholder="Unique User ID"
+              value={form.userName}
+              onChange={(e) => handleChange("userName", e.target.value)}
+              className="border text-foreground"
+              variant={
+                uidStatus?.status === "fail"
+                  ? "error"
+                  : uidStatus?.status === "success"
+                  ? "success"
+                  : "neutral"
+              }
+            />
+            {uidStatus?.status && (
+              <p
+                className={`text-xs mt-2 ms-2 ${
+                  uidStatus.status === "fail"
+                    ? "text-red-600"
+                    : "text-green-600"
+                }`}
+              >
+                {uidStatus.status === "fail"
+                  ? `User ID "${uidStatus.userName || ""}" is already taken`
+                  : "User ID is available"}
+              </p>
+            )}
+          </div>
+
           <div className="flex flex-col gap-2 text-foreground border-2 border-black/5 p-2 rounded-sm">
             <label className="font-medium text-foreground">Gender</label>
 
@@ -176,7 +246,7 @@ export default function Register({
           />
 
           <Button
-            disabled={loading}
+            disabled={loading || uidStatus?.status != "success"}
             onClick={handleSubmit}
             className="w-full bg-primary hover:bg-secondary text-white"
           >

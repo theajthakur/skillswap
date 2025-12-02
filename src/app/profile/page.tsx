@@ -18,5 +18,5 @@ export default async function Page() {
     redirect("/logout");
   }
 
-  return <UserProfile user={data} />;
+  return <UserProfile user={data} type="self" />;
 }

@@ -8,8 +8,15 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
 
-export default function UserProfile({ user }: { user: User }) {
+export default function UserProfile({
+  user,
+  type = "profile",
+}: {
+  user: User;
+  type?: string;
+}) {
   const { update, data } = useSession();
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -20,6 +27,7 @@ export default function UserProfile({ user }: { user: User }) {
   });
 
   const handleUpdate = async () => {
+    if (type === "profile") return;
     setIsLoading(true);
     try {
       const skillsArray = formData.skills
@@ -92,23 +100,33 @@ export default function UserProfile({ user }: { user: User }) {
                   <p className="text-secondary text-sm">{user.gender}</p>
                 </div>
               </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsEditing(!isEditing)}
-              >
-                {isEditing ? (
-                  <Save
-                    className="w-5 h-5 text-primary"
-                    onClick={handleUpdate}
-                  />
-                ) : (
-                  <Edit2 className="w-5 h-5 text-secondary" />
-                )}
-              </Button>
+              {type == "self" && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setIsEditing(!isEditing)}
+                >
+                  {isEditing && type == "self" ? (
+                    <Save
+                      className="w-5 h-5 text-primary"
+                      onClick={handleUpdate}
+                    />
+                  ) : (
+                    <Edit2 className="w-5 h-5 text-secondary" />
+                  )}
+                </Button>
+              )}
             </div>
 
             <div className="space-y-3 text-foreground">
+              {user.userName && (
+                <div className="flex items-center gap-3">
+                  <User2 className="w-5 h-5 text-primary" />
+                  <Badge variant={"outline"} className="tracking-wide">
+                    @ {user.userName}
+                  </Badge>
+                </div>
+              )}
               <div className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-primary" />
                 <span>{user.email}</span>
@@ -116,7 +134,7 @@ export default function UserProfile({ user }: { user: User }) {
 
               <div className="flex items-center gap-3">
                 <Phone className="w-5 h-5 text-primary" />
-                {isEditing ? (
+                {isEditing && type == "self" ? (
                   <Input
                     value={formData.mobile}
                     onChange={(e) =>
@@ -135,7 +153,7 @@ export default function UserProfile({ user }: { user: User }) {
                 <Code className="w-5 h-5" />
                 Skills
               </div>
-              {isEditing ? (
+              {isEditing && type == "self" ? (
                 <Textarea
                   value={formData.skills}
                   onChange={(e) =>
@@ -153,11 +171,6 @@ export default function UserProfile({ user }: { user: User }) {
                       {skill}
                     </span>
                   ))}
-                  {user.skills.length === 0 && (
-                    <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
-                      No skills
-                    </span>
-                  )}
                 </div>
               )}
             </div>
@@ -167,7 +180,7 @@ export default function UserProfile({ user }: { user: User }) {
                 <Heart className="w-5 h-5" />
                 Interests
               </div>
-              {isEditing ? (
+              {isEditing && type == "self" ? (
                 <Textarea
                   value={formData.interests}
                   onChange={(e) =>
@@ -194,24 +207,36 @@ export default function UserProfile({ user }: { user: User }) {
               )}
             </div>
             <div className="space-y-2">
-              {isEditing && (
+              {isEditing && type == "self" && (
+                <div className="flex w-full gap-2">
+                  <Button
+                    onClick={handleUpdate}
+                    disabled={isLoading}
+                    className="flex-1"
+                  >
+                    {isLoading ? "Updating..." : "Update Profile"}
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    onClick={() => setIsEditing(false)}
+                    className="whitespace-nowrap hover:flex-1 transition-all"
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              )}
+              {type == "self" && (
                 <Button
+                  variant={"destructive"}
                   className="w-full"
-                  onClick={handleUpdate}
-                  disabled={isLoading}
+                  onClick={() => {
+                    signOut();
+                  }}
                 >
-                  {isLoading ? "Updating..." : "Update Profile"}
+                  Logout
                 </Button>
               )}
-              <Button
-                variant={"destructive"}
-                className="w-full"
-                onClick={() => {
-                  signOut();
-                }}
-              >
-                Logout
-              </Button>
             </div>
           </CardContent>
         </Card>

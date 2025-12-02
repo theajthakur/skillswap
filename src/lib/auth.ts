@@ -60,11 +60,13 @@ export const authOptions: AuthOptions = {
               interests: [],
             },
           });
-        } else if (!existing.image && user.image) {
-          await prisma.user.update({
-            where: { email: user.email! },
-            data: { image: user.image },
-          });
+        } else {
+          if (!existing.image && user.image) {
+            await prisma.user.update({
+              where: { email: user.email! },
+              data: { image: user.image },
+            });
+          }
         }
       }
 

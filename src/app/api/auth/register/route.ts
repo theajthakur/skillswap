@@ -5,7 +5,7 @@ import { randomUUID } from "node:crypto";
 import { sendMail } from "@/lib/mailSender";
 
 export async function POST(req: Request) {
-  const { name, email, password, mobile, gender, skills, interests } =
+  const { name, email, password, mobile, gender, skills, interests, userName } =
     await req.json();
 
   if (!name || !email || !password) {
@@ -45,6 +45,7 @@ export async function POST(req: Request) {
       provider: "credentials",
       skills,
       interests,
+      userName,
     },
   });
 
@@ -62,7 +63,7 @@ export async function POST(req: Request) {
     to: email,
     subject: "Verify your email",
     html: `<p>Please verify your email by clicking the link below:</p>
-           <a href="${process.env.NEXT_PUBLIC_SERVER_URL}/secured/verification/${verificationCode}">Verify Email</a>
+           <a href="${process.env.NEXT_PUBLIC_SERVER_URL}/api/secured/verification/${verificationCode}">Verify Email</a>
            <br><p>This link will expire in 24 hours.</p>`,
   })
     .then(() => {

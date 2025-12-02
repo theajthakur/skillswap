@@ -44,10 +44,6 @@ export async function POST(req: Request) {
 
   // Return user data if everything is valid
   return NextResponse.json({
-    user: {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-    },
+    user,
   });
 }

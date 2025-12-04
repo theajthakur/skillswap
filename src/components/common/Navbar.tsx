@@ -40,7 +40,7 @@ export default function Navbar() {
           {["Features", "About", "Contact"].map((item) => (
             <Link
               key={item}
-              href={`#${item.toLowerCase()}`}
+              href={`${item.toLowerCase()}`}
               className="relative group hover:text-primary transition-colors"
             >
               {item}

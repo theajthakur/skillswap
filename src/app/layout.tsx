@@ -73,8 +73,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${poppins.variable} ${inter.variable} font-inter antialiased`}
+        className={`${poppins.variable} ${inter.variable} font-inter antialiased relative overflow-x-hidden`}
       >
+        {/* Global Background Gradients */}
+        <div className="fixed inset-0 -z-10 pointer-events-none">
+          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-primary/20 blur-[100px] animate-pulse" />
+          <div className="absolute top-[20%] right-[-5%] w-[30%] h-[30%] rounded-full bg-secondary/20 blur-[100px] animate-pulse delay-1000" />
+          <div className="absolute bottom-[-10%] left-[20%] w-[35%] h-[35%] rounded-full bg-accent/15 blur-[100px] animate-pulse delay-2000" />
+        </div>
         <LayoutProvider>{children}</LayoutProvider>
       </body>
     </html>

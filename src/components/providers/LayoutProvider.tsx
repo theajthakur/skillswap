@@ -13,7 +13,9 @@ const LayoutProvider: React.FC<LayoutProviderProps> = ({ children }) => {
     <AuthProvider>
       <Toaster />
       <Navbar />
-      {children}
+      <main className="pt-24 min-h-screen">
+        {children}
+      </main>
       <Footer />
     </AuthProvider>
   );

@@ -74,9 +74,9 @@ export default function UserProfile({
   };
 
   return (
-    <div className="min-h-[60vh] bg-background flex justify-center p-6">
+    <div className="min-h-[60vh] flex justify-center p-6">
       {user ? (
-        <Card className="w-full max-w-md bg-surface shadow-lg">
+        <Card className="w-full max-w-md shadow-lg">
           <CardContent className="p-6 space-y-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">

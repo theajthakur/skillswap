@@ -131,10 +131,9 @@ const MatchList: React.FC = () => {
   }, []);
   return (
     <div
-      className={`${
-        (loading || users.length > 0) &&
+      className={`${(loading || users.length > 0) &&
         " p-2 md:p-6 lg:p-20  grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 justify-center"
-      } bg-background`}
+        }`}
     >
       {!loading ? (
         users.length > 0 ? (

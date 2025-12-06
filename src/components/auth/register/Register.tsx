@@ -40,16 +40,16 @@ export default function Register({
       .slice(0, 5);
 
   const handleChange = (key: string, value: string) => {
-    if (key == "userName") {
+    if (key === "userName") {
       if (value.match(/[^a-zA-Z0-9_]/)) {
         toast.error(
           "User ID can only contain letters, numbers, and underscores"
         );
-      } else {
-        setTypingValue(value);
+        return;
       }
+      setTypingValue(value);
     }
-    setForm((prev) => ({ ...prev, [key]: typingValue }));
+    setForm((prev) => ({ ...prev, [key]: value }));
   };
 
   useEffect(() => {
@@ -96,6 +96,7 @@ export default function Register({
             gender: form.gender,
             skills,
             interests,
+            userName: form.userName,
           }),
         }
       );

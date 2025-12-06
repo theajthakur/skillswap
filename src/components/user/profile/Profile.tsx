@@ -170,7 +170,7 @@ export default function UserProfile({
                     >
                       {skill}
                     </span>
-                  ))}{" "}
+                  ))}
                   {user.skills.length === 0 && (
                     <span className="px-3 py-1 bg-secondary/10 text-secondary rounded-full text-sm">
                       No Skills
